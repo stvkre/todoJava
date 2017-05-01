@@ -1,12 +1,20 @@
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.sql2o.*;
 
 public class Task {
   private String description;
   private boolean completed;
   private LocalDateTime createdAt;
   private int id;
+
+public static List<Task> all() {
+  String sql = "SELECT id, description FROM tasks";
+  try(Connection con = BG.sql2o.open()) {
+    return con.createQuery(sql).executeAndFetch(Task.class);
+  }
+}
 
   public Task(String description) {
     this.description = description;
