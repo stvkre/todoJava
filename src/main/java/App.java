@@ -26,5 +26,16 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/categories/:category_id/tasks/:id", (request, response) -> {
+  Map<String, Object> model = new HashMap<String, Object>();
+  Task task = Task.find(Integer.parseInt(request.params("id")));
+  String description = request.queryParams("description");
+  Category category = Category.find(task.getCategoryId());
+  task.update(description);
+  String url = String.format("/categories/%d/tasks/%d", category.getId(), task.getId());
+  response.redirect(url);
+  return new ModelAndView(model, layout);
+}, new VelocityTemplateEngine());
+
   }
 }
