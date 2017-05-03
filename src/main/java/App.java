@@ -26,6 +26,8 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+// updating the to-do-list through a form
+
     post("/categories/:category_id/tasks/:id", (request, response) -> {
   Map<String, Object> model = new HashMap<String, Object>();
   Task task = Task.find(Integer.parseInt(request.params("id")));
