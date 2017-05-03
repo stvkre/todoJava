@@ -11,7 +11,7 @@ public class Task {
 
 public static List<Task> all() {
   String sql = "SELECT id, description FROM tasks";
-  try(Connection con = BG.sql2o.open()) {
+  try(Connection con = DB.sql2o.open()) {
     return con.createQuery(sql).executeAndFetch(Task.class);
   }
 }
@@ -49,15 +49,21 @@ public void save() {
     }
   }
 
-  public static void clear() {
-  instances.clear();
-}
-
   public Task(String description) {
     this.description = description;
     completed = false;
     createdAt = LocalDateTime.now();
   }
+
+  public void update(String description) {
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "UPDATE tasks SET description = :description WHERE id = :id";
+    con.createQuery(sql)
+      .addParameter("description", description)
+      .addParameter("id", id)
+      .executeUpdate();
+  }
+}
 
   public String getDescription() {
     return description;
@@ -75,7 +81,4 @@ public void save() {
     return id;
   }
 
-  public static Task find(int id) {
   }
-
-}

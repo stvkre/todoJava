@@ -52,6 +52,14 @@ public void save_returnsTrueIfDescriptionsAretheSame() {
     assertEquals(true, Task.all().get(0).equals(firstTask));
     assertEquals(true, Task.all().get(1).equals(secondTask));
   }
+  
+  @Test
+  public void update_updatesTaskDescription_true() {
+    Task myTask = new Task("Mow the lawn", 1);
+    myTask.save();
+    myTask.update("Take a nap");
+    assertEquals("Take a nap", Task.find(myTask.getId()).getDescription());
+  }
 
   @Test
 public void save_assignsIdToObject() {

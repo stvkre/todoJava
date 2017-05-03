@@ -10,8 +10,19 @@ public class App {
     String layout = "templates/layout.vtl";
 
     get("/", (request, response) -> {
+    Map<String, Object> model = new HashMap<String, Object>();
+    model.put("categories", Category.all());
+    model.put("template", "templates/index.vtl");
+    return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+
+  get("/categories/:category_id/tasks/:id", (request, response) -> {
       Map<String, Object> model = new HashMap<String, Object>();
-      model.put("template", "templates/index.vtl");
+      Category category = Category.find(Integer.parseInt(request.params(":category_id")));
+      Task task = Task.find(Integer.parseInt(request.params(":id")));
+      model.put("category", category);
+      model.put("task", task);
+      model.put("template", "templates/task.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
